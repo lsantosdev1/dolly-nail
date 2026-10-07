@@ -1,13 +1,7 @@
 import React from "react";
 import { useNavigate, Link, Outlet } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import {
-  Sparkles,
-  Calendar,
-  Scissors,
-  LogOut,
-  ExternalLink,
-} from "lucide-react";
+import { Sparkles, Calendar, LogOut, ExternalLink } from "lucide-react";
 
 export const AdminLayout: React.FC = () => {
   const { user, logout } = useAuth();

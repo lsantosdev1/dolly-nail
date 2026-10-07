@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from "react";
 import type { Appointment } from "../../types/index";
 import { api } from "../../services/api";
-import {
-  Calendar,
-  Clock,
-  User,
-  Phone,
-  CheckCircle,
-  AlertCircle,
-} from "lucide-react";
+import { Calendar, User, Phone, CheckCircle } from "lucide-react";
 
 export const Dashboard: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);

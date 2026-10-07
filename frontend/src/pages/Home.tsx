@@ -3,14 +3,7 @@ import { Navbar } from "../components/Navbar";
 import { BookingModal } from "../components/BookingModal";
 import type { Service } from "../types/index";
 import { api } from "../services/api";
-import {
-  Sparkles,
-  Clock,
-  MapPin,
-  Heart,
-  ShieldCheck,
-  Camera,
-} from "lucide-react";
+import { Sparkles, Clock, MapPin, Heart, Camera } from "lucide-react";
 
 export const Home: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
