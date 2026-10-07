@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELED
+  COMPLETED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Client {
+  id           String        @id @default(uuid())
+  name         String
+  phone        String        @unique
+  email        String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  appointments Appointment[]
+
+  @@map("clients")
+}
+
+model Service {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal       @db.Decimal(10, 2)
+  durationMin Int           // Duração em minutos (ex: 45, 60, 120)
+  active      Boolean       @default(true)
+  imageUrl    String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  appointments Appointment[]
+
+  @@map("services")
+}
+
+model Appointment {
+  id         String            @id @default(uuid())
+  clientId   String
+  serviceId  String
+  startTime  DateTime
+  endTime    DateTime
+  status     AppointmentStatus @default(CONFIRMED)
+  notes      String?
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  client  Client  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@map("appointments")
+}
+
+model BusinessHours {
+  id        String   @id @default(uuid())
+  dayOfWeek Int      // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
+  isOpen    Boolean  @default(true)
+  openTime  String   // Formato "HH:mm", ex: "09:00"
+  closeTime String   // Formato "HH:mm", ex: "18:00"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("business_hours")
+}
+
+model BlockedTime {
+  id        String   @id @default(uuid())
+  startTime DateTime
+  endTime   DateTime
+  reason    String?
+  createdAt DateTime @default(now())
+
+  @@map("blocked_times")
+}
